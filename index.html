@@ -1160,14 +1160,27 @@ function buildSearchIndex(){
   });
 }
 function norm(s){return s.toLowerCase().replace(/[\s.\-_\/\(\)&,]+/g,'');}
+function initials(name){
+  var words=name.toLowerCase().split(/[\s\-\/()&,]+/).filter(Boolean);
+  return words.map(function(w){return w[0];}).join('');
+}
 function scoreItem(q,item){
   var qn=norm(q),n=norm(item.name);
   if(n===qn)return 100;
   if(n.indexOf(qn)===0)return 90;
   if(n.indexOf(qn)>-1)return 75;
+  var inits=initials(item.name);
+  var words=q.toLowerCase().split(/\s+/).filter(Boolean);
+  var normWords=words.map(norm).filter(Boolean);
+  if(normWords.length>1){
+    var allMatch=normWords.every(function(nw){return n.indexOf(nw)>-1||inits.indexOf(nw)===0;});
+    if(allMatch)return 65;
+  }
+  if(normWords.length===1&&qn.length>=2&&inits.indexOf(qn)===0)return 55;
   var toks=item.name.toLowerCase().split(/\s+/);
   for(var i=0;i<toks.length;i++){
-    if(norm(toks[i]).indexOf(qn)===0)return 60;
+    var tn=norm(toks[i]);
+    if(tn.indexOf(qn)===0)return 60;
   }
   return 0;
 }
