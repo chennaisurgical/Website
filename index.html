@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZG5JWLHB2H"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-ZG5JWLHB2H');
+</script>
+
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <title>Chennai Surgical | Medical &amp; Surgical Equipment Supplier | Since 1998 | Chennai</title>
@@ -1005,6 +1013,7 @@ function addToCart(btn,name){
     return;
   }
   cart.push(real);
+  if(typeof gtag==='function')gtag('event','add_to_cart',{item_name:real});
   if(btn){btn.classList.add('added');btn.textContent='✓';}
   syncCartUI();
 }
@@ -1090,7 +1099,7 @@ function closeDrawer(){var d=document.getElementById('drawer');var h=document.ge
 function toggleProdSub(){const m=document.getElementById('prod-sub');m.style.display=m.style.display==='block'?'none':'block';}
 
 /* ── WA MODAL ── */
-function openWA(p){document.getElementById('wao').classList.add('show');if(p)document.getElementById('wa-q').value=p;}
+function openWA(p){document.getElementById('wao').classList.add('show');if(p)document.getElementById('wa-q').value=p;if(p&&typeof gtag==='function')gtag('event','enquire_click',{item_name:p});}
 function closeWA(){document.getElementById('wao').classList.remove('show');}
 function sendWA(e){
   e.preventDefault();
@@ -1185,7 +1194,13 @@ function scoreItem(q,item){
   return 0;
 }
 function escAttr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');}
+var _gaSearchTimer=null;
 function doSearch(raw){
+  clearTimeout(_gaSearchTimer);
+  var _rawForGA=raw;
+  _gaSearchTimer=setTimeout(function(){
+    if(_rawForGA&&_rawForGA.trim().length>1&&typeof gtag==='function')gtag('event','search',{search_term:_rawForGA.trim()});
+  },900);
   var drop=document.getElementById('srch-drop');
   var dropm=document.getElementById('srch-drop-m');
   function setDrop(html,show){
@@ -1223,6 +1238,7 @@ function clearSearch(){
 document.addEventListener('DOMContentLoaded',function(){setTimeout(buildSearchIndex,800);});
 
 function gotoProduct(seg,catId,name){
+  if(typeof gtag==='function')gtag('event','search_result_click',{item_name:name});
   nav(seg+'/'+catId);
   setTimeout(function(){
     var scope=document.getElementById('cat-'+catId)||document.getElementById('sec-'+seg);
