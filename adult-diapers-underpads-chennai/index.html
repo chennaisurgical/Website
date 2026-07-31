@@ -340,7 +340,6 @@ button{font-family:inherit;cursor:pointer}
       <p>112, Nyniappa Naicken Street, Sowcarpet, Park Town, Chennai – 600 003</p>
       <div class="store-links">
         <a href="tel:+919382131902">📞 93821 31902</a>
-        <a href="tel:+919382131902">📞 93821 31902</a>
         <a href="https://maps.google.com/?q=Chennai+Surgical+Pharma+Sowcarpet">📍 Get Directions</a>
       </div>
     </div>
@@ -437,13 +436,9 @@ function sendWA(e){
 }
 function buildSearchIndex(){
   SI=[];
-  var L={'patient':'Home & Patient Care','hospital':'Hospital & Clinic','labs':'Diagnostic Labs','school':'Schools & Colleges','colleges':'Medical Colleges','kits':'Ready-Made Kits'};
-  document.querySelectorAll('.catsec').forEach(function(sec){
-    var cat=sec.id.replace('cat-',''),seg=sec.dataset.seg||'';
-    sec.querySelectorAll('.pn').forEach(function(pn){
-      var name=pn.textContent.trim();
-      if(name) SI.push({name:name,seg:seg,catId:cat,label:L[seg]||seg});
-    });
+  document.querySelectorAll('.pgrid .pn').forEach(function(pn){
+    var name=pn.textContent.trim();
+    if(name) SI.push({name:name,label:document.querySelector('h1.cath')?document.querySelector('h1.cath').textContent.trim():''});
   });
 }
 function norm(s){return s.toLowerCase().replace(/[\s.\-_\/\(\)&,]+/g,'');}
@@ -518,23 +513,18 @@ function clearSearch(){
 }
 function gotoProduct(seg,catId,name){
   if(typeof gtag==='function')gtag('event','search_result_click',{item_name:name});
-  nav(seg+'/'+catId);
-  setTimeout(function(){
-    var scope=document.getElementById('cat-'+catId)||document.getElementById('sec-'+seg);
-    if(!scope)return;
-    var nodes=scope.querySelectorAll('.pn');
-    for(var i=0;i<nodes.length;i++){
-      if(nodes[i].textContent.trim()===name){
-        var card=nodes[i].closest('.pc');
-        if(card){
-          card.scrollIntoView({behavior:'smooth',block:'center'});
-          card.style.outline='3px solid var(--t)';card.style.outlineOffset='2px';
-          setTimeout(function(){card.style.outline='';},2200);
-        }
-        break;
+  var nodes=document.querySelectorAll('.pgrid .pn');
+  for(var i=0;i<nodes.length;i++){
+    if(nodes[i].textContent.trim()===name){
+      var card=nodes[i].closest('.pc');
+      if(card){
+        card.scrollIntoView({behavior:'smooth',block:'center'});
+        card.style.outline='3px solid var(--t)';card.style.outlineOffset='2px';
+        setTimeout(function(){card.style.outline='';},2200);
       }
+      break;
     }
-  },140);
+  }
   clearSearch();
 }
 function srchClick(e){
