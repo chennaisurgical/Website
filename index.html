@@ -1246,25 +1246,12 @@ function clearSearch(){
 }
 document.addEventListener('DOMContentLoaded',function(){setTimeout(buildSearchIndex,800);});
 
+var CATID_TO_SLUG={'diaper':'/adult-diapers-underpads-chennai/','meddev':'/blood-pressure-monitor-glucometer-chennai/','oxygen':'/oxygen-cylinder-concentrator-nebulizer-chennai/','advanced':'/ecg-machine-patient-monitor-chennai/','consumables':'/medical-gloves-iv-set-cannula-chennai/','homebed':'/hospital-bed-home-setup-chennai/','wheelchair':'/wheelchair-supplier-chennai/','walking':'/walker-walking-stick-crutches-chennai/','commode':'/commode-chair-toilet-aids-chennai/','catheters_pc':'/catheter-urobag-supplier-chennai/','ortho':'/knee-brace-cervical-collar-ortho-chennai/','dressing':'/bandage-dressing-pad-cotton-chennai/','solutions':'/saline-povidone-iodine-solution-chennai/','clothing':'/patient-gown-apron-chennai/','weighing':'/weighing-scale-chennai/','baby':'/baby-care-products-chennai/','hbeds':'/hospital-beds-furniture-chennai/','instruments':'/surgical-instruments-chennai/','syr_blood':'/syringe-blood-collection-chennai/','consumh':'/hospital-consumables-chennai/','catheters_h':'/foley-catheter-hospital-chennai/','woundhx':'/wound-care-dressing-hospital-chennai/','solutions2':'/iv-fluids-hospital-solutions-chennai/','ivfluids':'/iv-stand-infusion-set-chennai/','steelware':'/kidney-tray-steel-instruments-chennai/','stethoscope':'/stethoscope-bp-apparatus-chennai/','mdev':'/medical-devices-hospital-chennai/','advanced_h':'/ventilator-defibrillator-chennai/','physio':'/physiotherapy-equipment-chennai/','ortho2':'/cervical-collar-splint-hospital-chennai/','walkh':'/wheelchair-walker-hospital-chennai/','commode2':'/commode-chair-hospital-chennai/','weighh':'/weighing-scale-hospital-chennai/','biowaste':'/biomedical-waste-bags-chennai/','linen':'/hospital-linen-bed-sheets-chennai/','baby2':'/neonatal-baby-care-hospital-chennai/','misc':'/hospital-sundry-items-chennai/','bpcol':'/bp-apparatus-college-lab-chennai/','glucol':'/glucometer-strips-lab-chennai/','syr_lab':'/syringe-needle-lab-chennai/','glassware':'/lab-glassware-chennai/','plasticware':'/lab-plasticware-chennai/','labcons':'/lab-consumables-chennai/','linen2':'/lab-coat-apron-chennai/','biowaste2':'/lab-biowaste-bags-chennai/'};
 function gotoProduct(seg,catId,name){
   if(typeof gtag==='function')gtag('event','search_result_click',{item_name:name});
+  var slug=CATID_TO_SLUG[catId];
+  if(slug){location.href=slug+'#'+encodeURIComponent(name);return;}
   nav(seg+'/'+catId);
-  setTimeout(function(){
-    var scope=document.getElementById('cat-'+catId)||document.getElementById('sec-'+seg);
-    if(!scope)return;
-    var nodes=scope.querySelectorAll('.pn');
-    for(var i=0;i<nodes.length;i++){
-      if(nodes[i].textContent.trim()===name){
-        var card=nodes[i].closest('.pc');
-        if(card){
-          card.scrollIntoView({behavior:'smooth',block:'center'});
-          card.style.outline='3px solid var(--t)';card.style.outlineOffset='2px';
-          setTimeout(function(){card.style.outline='';},2200);
-        }
-        break;
-      }
-    }
-  },140);
   clearSearch();
 }
 function srchClick(e){
